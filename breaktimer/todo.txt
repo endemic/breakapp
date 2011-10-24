@@ -1,0 +1,6 @@
+* Create "Settings" view UI
+	* Interval time - 30 minutes to 3 hours
+	* Break time - 1 minute to 15 minutes
+	* Repeat notices?
+	* Dim screen?
+	* Turn off notices
