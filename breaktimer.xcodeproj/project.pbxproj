@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D8EF4C11457572600C63D19 /* grey-hour-hand.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D8EF4BF1457572600C63D19 /* grey-hour-hand.png */; };
+		7D8EF4C21457572600C63D19 /* grey-minute-hand.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D8EF4C01457572600C63D19 /* grey-minute-hand.png */; };
 		7D8FD9B014520B4800B339D2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8FD9AF14520B4800B339D2 /* QuartzCore.framework */; };
 		7D8FD9B214520B4800B339D2 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8FD9B114520B4800B339D2 /* OpenGLES.framework */; };
 		7D8FD9B414520B4800B339D2 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8FD9B314520B4800B339D2 /* OpenAL.framework */; };
@@ -132,6 +134,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7D8EF4BF1457572600C63D19 /* grey-hour-hand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grey-hour-hand.png"; sourceTree = "<group>"; };
+		7D8EF4C01457572600C63D19 /* grey-minute-hand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grey-minute-hand.png"; sourceTree = "<group>"; };
 		7D8FD9AB14520B4800B339D2 /* breaktimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = breaktimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D8FD9AF14520B4800B339D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7D8FD9B114520B4800B339D2 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -780,6 +784,8 @@
 		7DF4EB8D1452122E00C69034 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				7D8EF4BF1457572600C63D19 /* grey-hour-hand.png */,
+				7D8EF4C01457572600C63D19 /* grey-minute-hand.png */,
 				7DF4EB8E1452122E00C69034 /* background.png */,
 				7DF4EB8F1452122E00C69034 /* clock-face.png */,
 				7DF4EB901452122E00C69034 /* hour-hand.png */,
@@ -856,6 +862,8 @@
 				7DF4EB961452122E00C69034 /* minute-hand.png in Resources */,
 				7DF4EB971452122E00C69034 /* second-hand.png in Resources */,
 				7DD688AE1454B1C700AB97E7 /* todo.txt in Resources */,
+				7D8EF4C11457572600C63D19 /* grey-hour-hand.png in Resources */,
+				7D8EF4C21457572600C63D19 /* grey-minute-hand.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

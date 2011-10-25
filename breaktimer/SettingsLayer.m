@@ -45,6 +45,14 @@
 		// Boolean that gets flipped if user disables notifications
 		BOOL cancelled = NO;
 		
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		
+		// Turn "idle timer" off if user desires it
+		if ([defaults objectForKey:@"sleep"] == NO)
+		{
+			[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+		}
+		
 		// Create temporary button to flip to "settings" scene
 		CCMenuItemFont *button = [CCMenuItemFont itemFromString:@"Done!" block:^(id sender) {
 			
@@ -54,7 +62,8 @@
 				[[UIApplication sharedApplication] cancelAllLocalNotifications];
 				
 				// Create all the notification objects before transitioning back to clock
-				[self setUpNotifications];
+				// Do work in new thread since it's actually pretty slow
+				[NSThread detachNewThreadSelector:@selector(setUpNotifications) toTarget:self withObject:nil];
 			}
 			
 			if (cancelled)
@@ -89,6 +98,7 @@
 	// So, you'll have to make a loop and schedule 64 notifications, manually setting the time for each one
 	// Whenever the app is launched, you'll have to clear all notifications and re-schedule, based on a saved (serialized) value
 	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	// Write some witty reminders
 	NSArray *wittyComments = [NSArray arrayWithObjects:@"Take five.",
@@ -103,20 +113,15 @@
 							  nil];
 	
 	// Do a loop that sets up max number of notifications
-	for (int i = 0; i < kMaxNotificationLimit; i++)
+	for (int i = 1; i <= kMaxNotificationLimit; i++)
 	{
+		// Determine intervals between alerts
+		// First alert is just the "work" interval
+		// Subsequent alerts are work + break intervals
+		int notificationIntervalInSeconds = i == 1 ? workMinutes * 60 : (workMinutes * 60 * i) + (breakMinutes * 60 * (i - 1));
+		
 		// Create date obj that will be used for our reminder
-		NSDate *notificationTime;
-		if (i != 0)
-		{
-			// All subsequent notifications include the "break" duration as well
-			notificationTime = [NSDate dateWithTimeIntervalSinceNow:(workMinutes + breakMinutes) * 60];
-		}
-		else
-		{
-			// Schedule first notification to be after just the "work" duration
-			notificationTime = [NSDate dateWithTimeIntervalSinceNow:workMinutes * 60];
-		}
+		NSDate *notificationTime = [NSDate dateWithTimeIntervalSinceNow:notificationIntervalInSeconds];
 		
 		// Create new notification obj
 		UILocalNotification *notification = [[UILocalNotification alloc] init];
@@ -136,6 +141,8 @@
 		[[UIApplication sharedApplication] scheduleLocalNotification:notification];
 		[notification release];
 	}
+	
+	[pool release];
 }
 
 // on "dealloc" you need to release all your retained objects

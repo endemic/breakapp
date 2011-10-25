@@ -16,11 +16,18 @@
 	// Store clock hands
 	CCSprite *hourHand, *minuteHand, *secondHand;
 	
+	// Hands that show the next break
+	CCSprite *breakHourHand, *breakMinuteHand;
+	
 	// Store milliseconds that elapse per frame
 	ccTime ticks;
 }
 
 // returns a CCScene that contains the HelloWorldLayer as the only child
 +(CCScene *) scene;
+
+- (void)setClockHands;
+- (void)setBreakHands;
+- (void)updateBreakHands;
 
 @end

@@ -14,8 +14,6 @@
 {
 	// Two vars that hold the amount of time we want to work/break
     int workMinutes, breakMinutes;
-	
-	UISlider *workSlider, *breakSlider;
 }
 
 + (CCScene *)scene;

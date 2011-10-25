@@ -143,6 +143,14 @@
 
 -(void) applicationWillEnterForeground:(UIApplication*)application {
 	[[CCDirector sharedDirector] startAnimation];
+	
+	id layer = [[[CCDirector sharedDirector] runningScene] getChildByTag:kClockLayer];
+	
+	// If clock scene is running, update the position of the clock hands
+	if (layer != nil && [layer isKindOfClass:[HelloWorldLayer class]])
+	{
+		[(HelloWorldLayer *)layer setClockHands];
+	}
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -165,8 +173,9 @@
  * Handle local notifications when app is running
  */
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-//	NSLog(@"Received notification %@", notification);
+{	
+	// Handle notifications/badges
+	application.applicationIconBadgeNumber = 0;
 	
 	// Get the custom text associated w/ the notification
 	NSDictionary *userInfo = notification.userInfo;
