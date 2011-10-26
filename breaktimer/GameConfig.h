@@ -46,3 +46,6 @@
 
 #define kMaxNotificationLimit 64
 #define kClockLayer 1
+
+#define kWorkSliderTag 1
+#define kBreakSliderTag 2

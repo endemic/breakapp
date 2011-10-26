@@ -89,7 +89,7 @@
 #endif
 	
 	[director setAnimationInterval:1.0/60];
-	[director setDisplayFPS:YES];
+	[director setDisplayFPS:NO];
 	
 	
 	// make the OpenGLView a child of the view controller
@@ -105,9 +105,26 @@
 	// You can change anytime.
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
 
-	
 	// Removes the startup flicker
 	[self removeStartupFlicker];
+	
+	// Get user defaults
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	// Register some defaults
+	[defaults registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
+								[NSNumber numberWithInt:60], @"workMinutes", 
+								[NSNumber numberWithInt:5], @"breakMinutes",
+								[NSNumber numberWithBool:YES], @"sleep",
+								[NSNumber numberWithBool:YES], @"notifications",
+								[NSNumber numberWithBool:YES], @"repeatNotifications",
+								nil]];
+	
+	// Turn "idle timer" off if user desires it
+	if ([[defaults objectForKey:@"sleep"] boolValue] == NO)
+	{
+		[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+	}
 	
 	// Handle notifications/badges
 	application.applicationIconBadgeNumber = 0;

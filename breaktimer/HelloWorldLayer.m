@@ -179,6 +179,8 @@
 	}
 	else
 	{
+		NSLog(@"No notifications set!");
+		
 		// Keep invisible
 		breakMinuteHand.opacity = 0;
 		breakHourHand.opacity = 0;

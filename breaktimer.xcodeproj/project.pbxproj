@@ -131,6 +131,15 @@
 		7DF4EB951452122E00C69034 /* hour-hand.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF4EB901452122E00C69034 /* hour-hand.png */; };
 		7DF4EB961452122E00C69034 /* minute-hand.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF4EB911452122E00C69034 /* minute-hand.png */; };
 		7DF4EB971452122E00C69034 /* second-hand.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF4EB921452122E00C69034 /* second-hand.png */; };
+		7DFC89C614584EA6009E898E /* museo.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7DFC89C514584EA6009E898E /* museo.otf */; };
+		7DFC89CB14584EB3009E898E /* CCSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DFC89C914584EB3009E898E /* CCSlider.m */; };
+		7DFC89CC14584EB3009E898E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7DFC89CA14584EB3009E898E /* README.md */; };
+		7DFC89CF14585570009E898E /* slider-line.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DFC89CD14585570009E898E /* slider-line.png */; };
+		7DFC89D014585570009E898E /* slider-thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DFC89CE14585570009E898E /* slider-thumb.png */; };
+		7DFC89D314587A05009E898E /* save-button-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DFC89D114587A05009E898E /* save-button-selected.png */; };
+		7DFC89D414587A05009E898E /* save-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DFC89D214587A05009E898E /* save-button.png */; };
+		7DFC89D714588358009E898E /* off-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DFC89D514588358009E898E /* off-button.png */; };
+		7DFC89D814588358009E898E /* on-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DFC89D614588358009E898E /* on-button.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -379,6 +388,16 @@
 		7DF4EB901452122E00C69034 /* hour-hand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hour-hand.png"; sourceTree = "<group>"; };
 		7DF4EB911452122E00C69034 /* minute-hand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minute-hand.png"; sourceTree = "<group>"; };
 		7DF4EB921452122E00C69034 /* second-hand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second-hand.png"; sourceTree = "<group>"; };
+		7DFC89C514584EA6009E898E /* museo.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = museo.otf; path = Resources/fonts/museo.otf; sourceTree = "<group>"; };
+		7DFC89C814584EB3009E898E /* CCSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCSlider.h; sourceTree = "<group>"; };
+		7DFC89C914584EB3009E898E /* CCSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCSlider.m; sourceTree = "<group>"; };
+		7DFC89CA14584EB3009E898E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		7DFC89CD14585570009E898E /* slider-line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-line.png"; sourceTree = "<group>"; };
+		7DFC89CE14585570009E898E /* slider-thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider-thumb.png"; sourceTree = "<group>"; };
+		7DFC89D114587A05009E898E /* save-button-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-button-selected.png"; sourceTree = "<group>"; };
+		7DFC89D214587A05009E898E /* save-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "save-button.png"; sourceTree = "<group>"; };
+		7DFC89D514588358009E898E /* off-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "off-button.png"; sourceTree = "<group>"; };
+		7DFC89D614588358009E898E /* on-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "on-button.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -435,6 +454,7 @@
 		7D8FD9BF14520B4800B339D2 /* breaktimer */ = {
 			isa = PBXGroup;
 			children = (
+				7DFC89C714584EB3009E898E /* CCSlider */,
 				7D8FDB1114520B4C00B339D2 /* AppDelegate.h */,
 				7D8FDB1214520B4C00B339D2 /* AppDelegate.m */,
 				7D8FDB1414520B4C00B339D2 /* RootViewController.h */,
@@ -455,6 +475,7 @@
 		7D8FD9C014520B4800B339D2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7DFC89C314581BA7009E898E /* fonts */,
 				7DF4EB8D1452122E00C69034 /* images */,
 				7D8FD9C114520B4800B339D2 /* Default.png */,
 				7D8FD9C314520B4800B339D2 /* fps_images.png */,
@@ -784,6 +805,12 @@
 		7DF4EB8D1452122E00C69034 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				7DFC89D514588358009E898E /* off-button.png */,
+				7DFC89D614588358009E898E /* on-button.png */,
+				7DFC89D114587A05009E898E /* save-button-selected.png */,
+				7DFC89D214587A05009E898E /* save-button.png */,
+				7DFC89CD14585570009E898E /* slider-line.png */,
+				7DFC89CE14585570009E898E /* slider-thumb.png */,
 				7D8EF4BF1457572600C63D19 /* grey-hour-hand.png */,
 				7D8EF4C01457572600C63D19 /* grey-minute-hand.png */,
 				7DF4EB8E1452122E00C69034 /* background.png */,
@@ -794,6 +821,24 @@
 			);
 			name = images;
 			path = Resources/images;
+			sourceTree = "<group>";
+		};
+		7DFC89C314581BA7009E898E /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				7DFC89C514584EA6009E898E /* museo.otf */,
+			);
+			name = fonts;
+			sourceTree = "<group>";
+		};
+		7DFC89C714584EB3009E898E /* CCSlider */ = {
+			isa = PBXGroup;
+			children = (
+				7DFC89C814584EB3009E898E /* CCSlider.h */,
+				7DFC89C914584EB3009E898E /* CCSlider.m */,
+				7DFC89CA14584EB3009E898E /* README.md */,
+			);
+			path = CCSlider;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -864,6 +909,14 @@
 				7DD688AE1454B1C700AB97E7 /* todo.txt in Resources */,
 				7D8EF4C11457572600C63D19 /* grey-hour-hand.png in Resources */,
 				7D8EF4C21457572600C63D19 /* grey-minute-hand.png in Resources */,
+				7DFC89C614584EA6009E898E /* museo.otf in Resources */,
+				7DFC89CC14584EB3009E898E /* README.md in Resources */,
+				7DFC89CF14585570009E898E /* slider-line.png in Resources */,
+				7DFC89D014585570009E898E /* slider-thumb.png in Resources */,
+				7DFC89D314587A05009E898E /* save-button-selected.png in Resources */,
+				7DFC89D414587A05009E898E /* save-button.png in Resources */,
+				7DFC89D714588358009E898E /* off-button.png in Resources */,
+				7DFC89D814588358009E898E /* on-button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -973,6 +1026,7 @@
 				7D8FDB1614520B4C00B339D2 /* RootViewController.m in Sources */,
 				7D8FDB1914520B4C00B339D2 /* HelloWorldLayer.m in Sources */,
 				7DD688AB14549BFA00AB97E7 /* SettingsLayer.m in Sources */,
+				7DFC89CB14584EB3009E898E /* CCSlider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

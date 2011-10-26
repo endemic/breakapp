@@ -6,4 +6,4 @@
 	* Turn off notices
 	
 * When app returns from sleep, update the clock hands to correct hour/minute/second
-* Figure out a way to create notifications in a "not quite so slow" way
+* When sliders change, clear then set the first notification. On "save" button touch, set the rest of the notifications

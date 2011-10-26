@@ -8,6 +8,7 @@
 
 #import "SettingsLayer.h"
 #import "GameConfig.h"
+#import "CCSlider.h"
 
 @implementation SettingsLayer
 
@@ -32,31 +33,99 @@
 	if ((self = [super init])) 
 	{
 		CGSize windowSize = [CCDirector sharedDirector].winSize;
-		
-//		NSString *hdSuffix = @"";
+		NSString *hdSuffix = @"";
+		int defaultFontSize = 18;
+		int fontMultiplier = 1;
 
-		// These will be user-selectable, eventually
-		workMinutes = 60;
-		breakMinutes = 5;
+		// Add background
+		CCSprite *bg = [CCSprite spriteWithFile:[NSString stringWithFormat:@"background%@.png", hdSuffix]];
+		bg.position = ccp(windowSize.width / 2, windowSize.height / 2);
+		[self addChild:bg];
 		
-		// Boolean that gets flipped on if the user changes a setting
-		BOOL changed = YES;
-		
-		// Boolean that gets flipped if user disables notifications
-		BOOL cancelled = NO;
+		// Used to determine if notifications need to be re-scheduled
+		settingsHaveChanged = NO;
 		
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		
-		// Turn "idle timer" off if user desires it
-		if ([defaults objectForKey:@"sleep"] == NO)
-		{
-			[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-		}
+		// Default values
+		workMinutes = [defaults integerForKey:@"workMinutes"];
+		breakMinutes = [defaults integerForKey:@"breakMinutes"];
 		
-		// Create temporary button to flip to "settings" scene
-		CCMenuItemFont *button = [CCMenuItemFont itemFromString:@"Done!" block:^(id sender) {
-			
-			if (changed && !cancelled)
+		// Create label that shows how long each work interval is
+		workSliderLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Work Time (%i minutes)", workMinutes] fontName:@"museo.otf" fontSize:18];
+		workSliderLabel.color = ccc3(33, 33, 33);
+		workSliderLabel.position = ccp(windowSize.width / 2, windowSize.height - workSliderLabel.contentSize.height);
+		[self addChild:workSliderLabel];
+		
+		// Create "work" slider
+		CCSlider *workSlider = [CCSlider sliderWithBackgroundFile:[NSString stringWithFormat:@"slider-line%@.png", hdSuffix] thumbFile:[NSString stringWithFormat:@"slider-thumb%@.png", hdSuffix]];
+		workSlider.tag = kWorkSliderTag;
+		workSlider.delegate = self;
+		workSlider.value = (float)(workMinutes - 30) / 150;	// Convert 30 - 180 down to a number between 0 and 1
+		workSlider.position = ccp(windowSize.width / 2, workSliderLabel.position.y - workSlider.contentSize.height * 3);
+		[self addChild:workSlider];
+		
+		// Create label that shows how long each work interval is
+		breakSliderLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Break Time (%i minutes)", breakMinutes] fontName:@"museo.otf" fontSize:18];
+		breakSliderLabel.color = ccc3(33, 33, 33);
+		breakSliderLabel.position = ccp(windowSize.width / 2, workSlider.position.y - workSliderLabel.contentSize.height * 2);
+		[self addChild:breakSliderLabel];
+		
+		// Create "break" slider
+		CCSlider *breakSlider = [CCSlider sliderWithBackgroundFile:[NSString stringWithFormat:@"slider-line%@.png", hdSuffix] thumbFile:[NSString stringWithFormat:@"slider-thumb%@.png", hdSuffix]];
+		breakSlider.tag = kBreakSliderTag;
+		breakSlider.delegate = self;
+		breakSlider.value = (float)(breakMinutes - 1) / 14;	// Convert 1 - 15 down to a number between 0 and 1
+		breakSlider.position = ccp(windowSize.width / 2, breakSliderLabel.position.y - breakSlider.contentSize.height * 3);
+		[self addChild:breakSlider];
+
+		/* Create additional labels/buttons */
+		
+		// Show notifications
+		// Repeat notifications
+		// Device sleep
+		
+		int margin = 20;	// Margin from sides of screen for labels/buttons
+		
+		CCLabelTTF *showNotificationsLabel = [CCLabelTTF labelWithString:@"Display Notifications" dimensions:CGSizeMake(windowSize.width - margin * 2, defaultFontSize * fontMultiplier * 1.5) alignment:CCTextAlignmentLeft fontName:@"museo.otf" fontSize:defaultFontSize * fontMultiplier];
+		showNotificationsLabel.color = ccc3(33, 33, 33);
+		showNotificationsLabel.position = ccp(windowSize.width / 2, windowSize.height / 2 + showNotificationsLabel.contentSize.height);
+		[self addChild:showNotificationsLabel];
+
+		CCLabelTTF *repeatNotificationsLabel = [CCLabelTTF labelWithString:@"Repeat Notifications" dimensions:CGSizeMake(windowSize.width - margin * 2, defaultFontSize * fontMultiplier * 1.5) alignment:CCTextAlignmentLeft fontName:@"museo.otf" fontSize:defaultFontSize * fontMultiplier];
+		repeatNotificationsLabel.color = ccc3(33, 33, 33);
+		repeatNotificationsLabel.position = ccp(windowSize.width / 2, windowSize.height / 2);
+		[self addChild:repeatNotificationsLabel];
+		
+		CCLabelTTF *deviceSleepLabel = [CCLabelTTF labelWithString:@"Device Sleep" dimensions:CGSizeMake(windowSize.width - margin * 2, defaultFontSize * fontMultiplier * 1.5) alignment:CCTextAlignmentLeft fontName:@"museo.otf" fontSize:defaultFontSize * fontMultiplier];
+		deviceSleepLabel.color = ccc3(33, 33, 33);
+		deviceSleepLabel.position = ccp(windowSize.width / 2, windowSize.height / 2 - deviceSleepLabel.contentSize.height);
+		[self addChild:deviceSleepLabel];
+		
+		CCMenuItemToggle *showNotificationsButton = [CCMenuItemToggle itemWithBlock:^(id sender) {
+			// Does anything happen here?
+			NSLog(@"Selected button: %i", [(CCMenuItemToggle *)sender selectedIndex]);
+		} items:[CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"on-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"on-button-selected%@.png", hdSuffix]], [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"off-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"off-button-selected%@.png", hdSuffix]], nil];
+		
+		CCMenuItemToggle *repeatNotificationsButton = [CCMenuItemToggle itemWithBlock:^(id sender) {
+			// Does anything happen here?
+			NSLog(@"Selected button: %i", [(CCMenuItemToggle *)sender selectedIndex]);
+		} items:[CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"on-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"on-button-selected%@.png", hdSuffix]], [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"off-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"off-button-selected%@.png", hdSuffix]], nil];
+		
+		CCMenuItemToggle *deviceSleepButton = [CCMenuItemToggle itemWithBlock:^(id sender) {
+			// Does anything happen here?
+			NSLog(@"Selected button: %i", [(CCMenuItemToggle *)sender selectedIndex]);
+		} items:[CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"on-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"on-button-selected%@.png", hdSuffix]], [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"off-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"off-button-selected%@.png", hdSuffix]], nil];
+		
+		
+		CCMenu *buttonsMenu = [CCMenu menuWithItems:showNotificationsButton, repeatNotificationsButton, deviceSleepButton, nil];
+		buttonsMenu.position = ccp(windowSize.width - showNotificationsButton.contentSize.width / 2 - margin, windowSize.height / 2);
+		[buttonsMenu alignItemsVerticallyWithPadding:defaultFontSize * fontMultiplier * 1.5];
+		[self addChild:buttonsMenu];
+		
+		// Create "save" button to transition back to 
+		CCMenuItemImage *saveButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"save-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"save-button-selected%@.png", hdSuffix] block:^(id sender) {
+			if (settingsHaveChanged)
 			{
 				// Cancel previously scheduled notifications
 				[[UIApplication sharedApplication] cancelAllLocalNotifications];
@@ -66,19 +135,12 @@
 				[NSThread detachNewThreadSelector:@selector(setUpNotifications) toTarget:self withObject:nil];
 			}
 			
-			if (cancelled)
-			{
-				// Cancel previously scheduled notifications
-				[[UIApplication sharedApplication] cancelAllLocalNotifications];
-			}
-			
 			CCTransitionFlipX *transition = [CCTransitionFlipX transitionWithDuration:1.0 scene:[HelloWorldLayer scene]];
 			[[CCDirector sharedDirector] replaceScene:transition];
 		}];
-		button.color = ccc3(255, 255, 255);
 		
-		CCMenu *menu = [CCMenu menuWithItems:button, nil];
-		menu.position = ccp(windowSize.width / 2, button.contentSize.height);
+		CCMenu *menu = [CCMenu menuWithItems:saveButton, nil];
+		menu.position = ccp(windowSize.width / 2, saveButton.contentSize.height);
 		[self addChild:menu];
 		
 	}
@@ -97,6 +159,9 @@
 	// Hmm, apparently you can't do custom time intervals
 	// So, you'll have to make a loop and schedule 64 notifications, manually setting the time for each one
 	// Whenever the app is launched, you'll have to clear all notifications and re-schedule, based on a saved (serialized) value
+	
+	NSLog(@"Work minutes: %i", workMinutes);
+	NSLog(@"Break minutes: %i", breakMinutes);
 	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
@@ -137,12 +202,48 @@
 		
 		notification.alertAction = @"Edit Reminders";
 		notification.soundName = UILocalNotificationDefaultSoundName;
-		notification.applicationIconBadgeNumber = 1;
+//		notification.applicationIconBadgeNumber = 1;
 		[[UIApplication sharedApplication] scheduleLocalNotification:notification];
 		[notification release];
 	}
 	
 	[pool release];
+}
+
+/**
+ * Receives messages from CCSliders being changed
+ */
+- (void)valueChanged:(float)value tag:(int)tag
+{
+	// range sentinel
+	value = MIN(value, 1.0f);
+	value = MAX(value, 0.0f);
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	// set value * 100
+	switch (tag) 
+	{
+		case kWorkSliderTag:
+			// 30 - 180 = (0 - 150) + 30
+			workMinutes = (value * 150) + 30;
+			workSliderLabel.string = [NSString stringWithFormat:@"Work Time (%i minutes)", workMinutes];
+			[defaults setInteger:workMinutes forKey:@"workMinutes"];
+			break;
+		case kBreakSliderTag:
+			// 1 - 15 = (0 - 14) + 1
+			breakMinutes = (value * 14) + 1;
+			breakSliderLabel.string = [NSString stringWithFormat:@"Break Time (%i minutes)", breakMinutes];
+			[defaults setInteger:breakMinutes forKey:@"breakMinutes"];
+			break;
+		default:
+			break;
+	}
+	
+	[defaults synchronize];
+	
+	// Tell the app that we need to re-save our settings
+	settingsHaveChanged = YES;
 }
 
 // on "dealloc" you need to release all your retained objects
