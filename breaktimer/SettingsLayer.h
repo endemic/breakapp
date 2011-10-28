@@ -26,6 +26,6 @@
 }
 
 + (CCScene *)scene;
-- (void)setUpNotifications;
+- (void)setUpNotificationWithRepeat:(BOOL)shouldRepeat;
 
 @end

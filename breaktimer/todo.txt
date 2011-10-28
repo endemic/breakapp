@@ -1,9 +1,9 @@
-* Create "Settings" view UI
-	* Interval time - 30 minutes to 3 hours
-	* Break time - 1 minute to 15 minutes
-	* Repeat notices?
-	* Dim screen?
-	* Turn off notices
-	
+* Clean up layout of settings scene	
 * When app returns from sleep, update the clock hands to correct hour/minute/second
-* When sliders change, clear then set the first notification. On "save" button touch, set the rest of the notifications
+* Experiment with all those random app delegate methods, to see what events fire when
+* Ensure the settings "save" button works correctly - have 1st notification auto-set, then set the others when "saved"
+* Create HD versions of images
+* Finalize the icon design
+* Notifications after the first don't seem to be displayed on the clock face
+* "Snap" work time values to 5 minute intervals
+* Remove code which shows a popup when app is opened from notification

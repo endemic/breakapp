@@ -101,14 +101,13 @@
 		[self setBreakHands];
 
 		// Create temporary button to flip to "settings" scene
-		CCMenuItemFont *button = [CCMenuItemFont itemFromString:@"i" block:^(id sender) {
+		CCMenuItemImage *settingsButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"settings-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"settings-button-selected%@.png", hdSuffix] block:^(id sender) {
 			CCTransitionFlipX *transition = [CCTransitionFlipX transitionWithDuration:1.0 scene:[SettingsLayer scene]];
 			[[CCDirector sharedDirector] replaceScene:transition];
 		}];
-		button.color = ccc3(0, 0, 0);
 		
-		CCMenu *menu = [CCMenu menuWithItems:button, nil];
-		menu.position = ccp(windowSize.width - button.contentSize.width, button.contentSize.height);
+		CCMenu *menu = [CCMenu menuWithItems:settingsButton, nil];
+		menu.position = ccp(windowSize.width - settingsButton.contentSize.width, settingsButton.contentSize.height - 2);
 		[self addChild:menu];
 	}
 	return self;

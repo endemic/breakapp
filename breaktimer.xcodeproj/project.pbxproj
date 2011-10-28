@@ -124,6 +124,8 @@
 		7D8FDB1314520B4C00B339D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8FDB1214520B4C00B339D2 /* AppDelegate.m */; };
 		7D8FDB1614520B4C00B339D2 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8FDB1514520B4C00B339D2 /* RootViewController.m */; };
 		7D8FDB1914520B4C00B339D2 /* HelloWorldLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D8FDB1814520B4C00B339D2 /* HelloWorldLayer.m */; };
+		7DB40D3A1459A09800075DF2 /* settings-button-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DB40D381459A09800075DF2 /* settings-button-selected.png */; };
+		7DB40D3B1459A09800075DF2 /* settings-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DB40D391459A09800075DF2 /* settings-button.png */; };
 		7DD688AB14549BFA00AB97E7 /* SettingsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DD688AA14549BFA00AB97E7 /* SettingsLayer.m */; };
 		7DD688AE1454B1C700AB97E7 /* todo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7DD688AD1454B1C700AB97E7 /* todo.txt */; };
 		7DF4EB931452122E00C69034 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DF4EB8E1452122E00C69034 /* background.png */; };
@@ -380,6 +382,8 @@
 		7D8FDB1714520B4C00B339D2 /* HelloWorldLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorldLayer.h; sourceTree = "<group>"; };
 		7D8FDB1814520B4C00B339D2 /* HelloWorldLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloWorldLayer.m; sourceTree = "<group>"; };
 		7D8FDB1A14520B4C00B339D2 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
+		7DB40D381459A09800075DF2 /* settings-button-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-button-selected.png"; sourceTree = "<group>"; };
+		7DB40D391459A09800075DF2 /* settings-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-button.png"; sourceTree = "<group>"; };
 		7DD688A914549BFA00AB97E7 /* SettingsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsLayer.h; sourceTree = "<group>"; };
 		7DD688AA14549BFA00AB97E7 /* SettingsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsLayer.m; sourceTree = "<group>"; };
 		7DD688AD1454B1C700AB97E7 /* todo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = todo.txt; sourceTree = "<group>"; };
@@ -805,6 +809,8 @@
 		7DF4EB8D1452122E00C69034 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				7DB40D381459A09800075DF2 /* settings-button-selected.png */,
+				7DB40D391459A09800075DF2 /* settings-button.png */,
 				7DFC89D514588358009E898E /* off-button.png */,
 				7DFC89D614588358009E898E /* on-button.png */,
 				7DFC89D114587A05009E898E /* save-button-selected.png */,
@@ -917,6 +923,8 @@
 				7DFC89D414587A05009E898E /* save-button.png in Resources */,
 				7DFC89D714588358009E898E /* off-button.png in Resources */,
 				7DFC89D814588358009E898E /* on-button.png in Resources */,
+				7DB40D3A1459A09800075DF2 /* settings-button-selected.png in Resources */,
+				7DB40D3B1459A09800075DF2 /* settings-button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
