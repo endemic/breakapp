@@ -87,7 +87,7 @@
 		CCSlider *breakSlider = [CCSlider sliderWithBackgroundFile:[NSString stringWithFormat:@"slider-line%@.png", hdSuffix] thumbFile:[NSString stringWithFormat:@"slider-thumb%@.png", hdSuffix]];
 		breakSlider.tag = kBreakSliderTag;
 		breakSlider.delegate = self;
-		breakSlider.value = (float)(breakMinutes - 1) / 14;	// Convert 1 - 15 down to a number between 0 and 1
+		breakSlider.value = (float)breakMinutes / 15;	// Convert 1 - 15 down to a number between 0 and 1
 		breakSlider.position = ccp(windowSize.width / 2, breakSliderLabel.position.y - breakSlider.contentSize.height * 3);
 		[self addChild:breakSlider];
 
@@ -116,17 +116,19 @@
 			{
 				case 0:
 					[defaults setBool:YES forKey:@"notifications"];
-					NSLog(@"On!");
+//					NSLog(@"On!");
 					break;
 				case 1:
 					[defaults setBool:NO forKey:@"notifications"];
-					NSLog(@"Off!");
+//					NSLog(@"Off!");
 					break;
 				default:
 					break;
 			}
 			
 			[defaults synchronize];
+
+			settingsHaveChanged = YES;
 			
 		} items:[CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"on-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"on-button-selected%@.png", hdSuffix]], [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"off-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"off-button-selected%@.png", hdSuffix]], nil];
 		
@@ -167,14 +169,14 @@
 			switch ([(CCMenuItemToggle *)sender selectedIndex]) 
 			{
 				case 0:
-					NSLog(@"Sleep on");
+//					NSLog(@"Sleep on");
 					[defaults setBool:YES forKey:@"sleep"];
 					[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 					break;
 				case 1:
 					[defaults setBool:NO forKey:@"sleep"];
 					[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-					NSLog(@"Sleep off");
+//					NSLog(@"Sleep off");
 					break;
 				default:
 					break;
@@ -197,8 +199,8 @@
 		
 		// Create "save" button to transition back to 
 		CCMenuItemImage *saveButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"save-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"save-button-selected%@.png", hdSuffix] block:^(id sender) {
-			
-			if (settingsHaveChanged && [defaults boolForKey:@"notifications"])
+
+			if (settingsHaveChanged == YES && [defaults boolForKey:@"notifications"] == YES)
 			{
 				// Cancel previously scheduled notifications
 				[[UIApplication sharedApplication] cancelAllLocalNotifications];
@@ -212,7 +214,7 @@
 
 			
 			// Cancel recurring notifications if user desires
-			if (![defaults boolForKey:@"notifications"])
+			if ([defaults boolForKey:@"notifications"] == NO)
 			{
 				[[UIApplication sharedApplication] cancelAllLocalNotifications];
 			}
@@ -235,7 +237,7 @@
  */
 - (void)setUpNotification
 {
-	NSLog(@"Creating one notification");
+//	NSLog(@"Creating one notification");
 
 	// Determine intervals between alerts
 	// First alert is just the "work" interval
@@ -335,30 +337,41 @@
 			// Snap "work" minutes values to multiples of 5
 			workMinutes = (workMinutes / 5) * 5;
 			
-			workSliderLabel.string = [NSString stringWithFormat:@"Work Time (%i minutes)", workMinutes];
-			[defaults setInteger:workMinutes forKey:@"workMinutes"];
+			if (workMinutes != [defaults integerForKey:@"workMinutes"])
+			{
+				workSliderLabel.string = [NSString stringWithFormat:@"Work Time (%i minutes)", workMinutes];
+				[defaults setInteger:workMinutes forKey:@"workMinutes"];
+				[defaults synchronize];
+				
+				// Tell the app that we need to re-save our settings
+				settingsHaveChanged = YES;
+			}
 			break;
 		case kBreakSliderTag:
 			// 1 - 15 = (0 - 14) + 1
-			breakMinutes = (value * 14) + 1;
-			if (breakMinutes == 1)
+			breakMinutes = (value * 15);
+			
+			if (breakMinutes != [defaults integerForKey:@"breakMinutes"])
 			{
-				breakSliderLabel.string = [NSString stringWithFormat:@"Break Time (%i minute)", breakMinutes];
+				if (breakMinutes == 1)
+				{
+					breakSliderLabel.string = [NSString stringWithFormat:@"Break Time (%i minute)", breakMinutes];
+				}
+				else
+				{
+					breakSliderLabel.string = [NSString stringWithFormat:@"Break Time (%i minutes)", breakMinutes];
+				}
+				
+				[defaults setInteger:breakMinutes forKey:@"breakMinutes"];
+				[defaults synchronize];
+				
+				// Tell the app that we need to re-save our settings
+				settingsHaveChanged = YES;
 			}
-			else
-			{
-				breakSliderLabel.string = [NSString stringWithFormat:@"Break Time (%i minutes)", breakMinutes];
-			}
-			[defaults setInteger:breakMinutes forKey:@"breakMinutes"];
 			break;
 		default:
 			break;
 	}
-	
-	[defaults synchronize];
-	
-	// Tell the app that we need to re-save our settings
-	settingsHaveChanged = YES;
 }
 
 // on "dealloc" you need to release all your retained objects

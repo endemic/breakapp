@@ -214,7 +214,7 @@
 	// If clock scene is running, set UIAlertView delegate to that
 	if (layer != nil && [layer isKindOfClass:[HelloWorldLayer class]])
 	{
-		alertView = [[[UIAlertView alloc] initWithTitle:@"BreakTime"
+		alertView = [[[UIAlertView alloc] initWithTitle:@"BreakApp"
 												message:[userInfo objectForKey:@"text"]
 											   delegate:layer
 									  cancelButtonTitle:@"OK"
@@ -223,7 +223,7 @@
 	// Otherwise, just set it to the app delegate and ignore
 	else
 	{
-		alertView = [[[UIAlertView alloc] initWithTitle:@"BreakTime"
+		alertView = [[[UIAlertView alloc] initWithTitle:@"BreakApp"
 												message:[userInfo objectForKey:@"text"]
 											   delegate:self
 									  cancelButtonTitle:@"OK"
