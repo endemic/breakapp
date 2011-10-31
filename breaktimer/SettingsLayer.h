@@ -16,16 +16,18 @@
 	// Two vars that hold the amount of time we want to work/break
     int workMinutes, breakMinutes;
 	
+	// Labels that show how much work/break time remains -- they need to be udpated, hence they're class members
 	CCLabelTTF *workSliderLabel, *breakSliderLabel;
 	
 	// Boolean that gets flipped on if the user changes a setting
 	BOOL settingsHaveChanged;
 	
-	// Boolean that gets flipped if user disables notifications
-	BOOL cancelNotifications;
+	// Array of strings with different reminders to take a break
+	NSArray *wittyComments;
 }
 
 + (CCScene *)scene;
-- (void)setUpNotificationWithRepeat:(BOOL)shouldRepeat;
+- (void)setUpNotification;
+- (void)setUpRepeatNotifications;
 
 @end

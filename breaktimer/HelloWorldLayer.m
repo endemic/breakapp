@@ -36,10 +36,7 @@
 	if ((self = [super init])) 
 	{
 		CGSize windowSize = [CCDirector sharedDirector].winSize;
-		
 		NSString *hdSuffix = @"";
-		
-		static BOOL appJustStarted = YES;
 		
 		// Add background
 		CCSprite *bg = [CCSprite spriteWithFile:[NSString stringWithFormat:@"background%@.png", hdSuffix]];
@@ -77,20 +74,14 @@
 		breakMinuteHand.opacity = 0;
 		[self addChild:breakMinuteHand z:2];
 		
-		// If this is the first run, have the clock hands fade in so the transition isn't as jarring
-		if (appJustStarted)
-		{
-			secondHand.opacity = 0;
-			minuteHand.opacity = 0;
-			hourHand.opacity = 0;
-			
-			[secondHand runAction:[CCFadeIn actionWithDuration:0.5]];
-			[minuteHand runAction:[CCFadeIn actionWithDuration:0.5]];
-			[hourHand runAction:[CCFadeIn actionWithDuration:0.5]];
-			
-			appJustStarted = NO;
-		}
+		secondHand.opacity = 0;
+		minuteHand.opacity = 0;
+		hourHand.opacity = 0;
 		
+		[secondHand runAction:[CCFadeIn actionWithDuration:0.5]];
+		[minuteHand runAction:[CCFadeIn actionWithDuration:0.5]];
+		[hourHand runAction:[CCFadeIn actionWithDuration:0.5]];
+			
 		// Schedule update loop
 		[self scheduleUpdate];
 		
@@ -100,14 +91,14 @@
 		// Set correct position for next break
 		[self setBreakHands];
 
-		// Create temporary button to flip to "settings" scene
+		// Create button to flip to "settings" scene
 		CCMenuItemImage *settingsButton = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"settings-button%@.png", hdSuffix] selectedImage:[NSString stringWithFormat:@"settings-button-selected%@.png", hdSuffix] block:^(id sender) {
 			CCTransitionFlipX *transition = [CCTransitionFlipX transitionWithDuration:1.0 scene:[SettingsLayer scene]];
 			[[CCDirector sharedDirector] replaceScene:transition];
 		}];
 		
 		CCMenu *menu = [CCMenu menuWithItems:settingsButton, nil];
-		menu.position = ccp(windowSize.width - settingsButton.contentSize.width, settingsButton.contentSize.height - 2);
+		menu.position = ccp(windowSize.width - settingsButton.contentSize.width / 2, settingsButton.contentSize.height / 2);
 		[self addChild:menu];
 	}
 	return self;
@@ -151,6 +142,39 @@
 }
 
 /**
+ * Call to move the clock hands to the appropriate position after long periods of inactivity
+ */
+- (void)updateClockHands
+{
+	// Get current date/time
+	NSDate *now = [NSDate dateWithTimeIntervalSinceNow:0];
+	
+	// Break apart into hours/minutes/seconds components
+	NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
+	NSDateComponents *components = [calendar components:(NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:now];
+	
+	int hour = [components hour];
+	int minute = [components minute];
+	int second = [components second];
+	
+	[secondHand runAction:[CCFadeOut actionWithDuration:0.25]];
+	[minuteHand runAction:[CCFadeOut actionWithDuration:0.25]];
+	[hourHand runAction:[CCFadeOut actionWithDuration:0.25]];
+	
+	// initialize rotation of hands to current time
+	// 1 second = 6 degrees
+	// 1 minute = 6 degrees
+	// 1 hour = 30 degrees
+	secondHand.rotation = second * 6;
+	minuteHand.rotation = (minute * 6) + (second * 6 / 60);	// Plus percentage of seconds
+	hourHand.rotation = (hour % 12) * 30 + (minute * 30 / 60) + (second * 6 / 60);	// Plus percentage of minutes + seconds
+	
+	[secondHand runAction:[CCFadeIn actionWithDuration:0.25]];
+	[minuteHand runAction:[CCFadeIn actionWithDuration:0.25]];
+	[hourHand runAction:[CCFadeIn actionWithDuration:0.25]];
+}
+
+/**
  * Move the "break" hands to correct initial positions
  */
 - (void)setBreakHands
@@ -173,13 +197,15 @@
 		breakMinuteHand.rotation = (minute * 6) + (second * 6 / 60);	// Plus percentage of seconds
 		breakHourHand.rotation = (hour % 12) * 30 + (minute * 30 / 60) + (second * 6 / 60);	// Plus percentage of minutes + seconds
 		
-		[breakHourHand runAction:[CCFadeIn actionWithDuration:0.5]];
-		[breakMinuteHand runAction:[CCFadeIn actionWithDuration:0.5]];
+		// Make visible if needed
+		if (breakHourHand.opacity == 0 && breakMinuteHand.opacity == 0)
+		{
+			[breakHourHand runAction:[CCFadeIn actionWithDuration:0.5]];
+			[breakMinuteHand runAction:[CCFadeIn actionWithDuration:0.5]];
+		}
 	}
 	else
-	{
-		NSLog(@"No notifications set!");
-		
+	{		
 		// Keep invisible
 		breakMinuteHand.opacity = 0;
 		breakHourHand.opacity = 0;
@@ -206,26 +232,14 @@
 		int minute = [components minute];
 		int second = [components second];
 		
-		int newMinuteAngle = (minute * 6) + (second * 6 / 60);	// Plus percentage of seconds
-		int newHourAngle = (hour % 12) * 30 + (minute * 30 / 60) + (second * 6 / 60);	// Plus percentage of minutes + seconds
+		[breakHourHand runAction:[CCFadeOut actionWithDuration:0.25]];
+		[breakMinuteHand runAction:[CCFadeOut actionWithDuration:0.25]];
 		
-		// Find difference between new position and current position
-		int minuteDiff = newMinuteAngle - breakMinuteHand.rotation;
-		int hourDiff = newHourAngle - breakHourHand.rotation;
+		breakMinuteHand.rotation = (minute * 6) + (second * 6 / 60);	// Plus percentage of seconds
+		breakHourHand.rotation = (hour % 12) * 30 + (minute * 30 / 60) + (second * 6 / 60);	// Plus percentage of minutes + seconds
 		
-		// Ensure that angles are always going "forward"
-		if (minuteDiff < 0)
-		{
-			minuteDiff *= -1;
-		}
-		
-		if (hourDiff < 0)
-		{
-			hourDiff *= -1;
-		}
-		
-		[breakMinuteHand runAction:[CCRotateBy actionWithDuration:1.0 angle:minuteDiff]];
-		[breakHourHand runAction:[CCRotateBy actionWithDuration:1.0 angle:hourDiff]];
+		[breakHourHand runAction:[CCFadeIn actionWithDuration:0.25]];
+		[breakMinuteHand runAction:[CCFadeIn actionWithDuration:0.25]];
 	}
 	else
 	{
@@ -242,6 +256,9 @@
 {
 	// Get the next notification and move the "pending" clock hands to the next break time
 	NSLog(@"Received the alert callback from HelloWorldLayer!");
+	
+	[self updateBreakHands];
+	[self updateClockHands];
 }
 
 // on "dealloc" you need to release all your retained objects

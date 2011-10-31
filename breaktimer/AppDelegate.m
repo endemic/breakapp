@@ -70,8 +70,10 @@
 	[director setOpenGLView:glView];
 	
 //	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
-//	if( ! [director enableRetinaDisplay:YES] )
-//		CCLOG(@"Retina Display Not supported");
+	if( ! [director enableRetinaDisplay:YES] )
+	{
+		CCLOG(@"Retina Display Not supported");
+	}
 	
 	//
 	// VERY IMPORTANT:
@@ -132,11 +134,11 @@
 	UILocalNotification *notification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
 	if (notification)
 	{
-		NSLog(@"Received notification %@", notification);
+//		NSLog(@"Received notification %@", notification);
 	}
 	
 	// Run the intro Scene
-	[[CCDirector sharedDirector] runWithScene: [HelloWorldLayer scene]];
+	[[CCDirector sharedDirector] runWithScene:[HelloWorldLayer scene]];
 	
 	return YES;
 }
@@ -144,10 +146,12 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] pause];
+//	NSLog(@"applicationWillResignActive");
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] resume];
+//	NSLog(@"applicationDidBecomeActive");
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
@@ -156,17 +160,20 @@
 
 -(void) applicationDidEnterBackground:(UIApplication*)application {
 	[[CCDirector sharedDirector] stopAnimation];
+//	NSLog(@"applicationDidEnterBackground");
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application {
 	[[CCDirector sharedDirector] startAnimation];
-	
+//	NSLog(@"applicationDidEnterForeground");
 	id layer = [[[CCDirector sharedDirector] runningScene] getChildByTag:kClockLayer];
 	
 	// If clock scene is running, update the position of the clock hands
 	if (layer != nil && [layer isKindOfClass:[HelloWorldLayer class]])
 	{
-		[(HelloWorldLayer *)layer setClockHands];
+//		NSLog(@"calling [HelloWorldLayer seClockHands]");
+		[(HelloWorldLayer *)layer updateClockHands];
+		[(HelloWorldLayer *)layer updateBreakHands];
 	}
 }
 
@@ -184,6 +191,7 @@
 
 - (void)applicationSignificantTimeChange:(UIApplication *)application {
 	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
+//	NSLog(@"applicationSignificantTimeChange");
 }
 
 /*
@@ -232,6 +240,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	// Do nothing
+	// Probably should re-update notifications here
 }
 
 - (void)dealloc {

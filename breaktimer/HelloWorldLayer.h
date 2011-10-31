@@ -27,6 +27,7 @@
 +(CCScene *) scene;
 
 - (void)setClockHands;
+- (void)updateClockHands;
 - (void)setBreakHands;
 - (void)updateBreakHands;
 

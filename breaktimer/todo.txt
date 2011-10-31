@@ -1,9 +1,4 @@
-* Clean up layout of settings scene	
-* When app returns from sleep, update the clock hands to correct hour/minute/second
-* Experiment with all those random app delegate methods, to see what events fire when
-* Ensure the settings "save" button works correctly - have 1st notification auto-set, then set the others when "saved"
-* Create HD versions of images
-* Finalize the icon design
-* Notifications after the first don't seem to be displayed on the clock face
-* "Snap" work time values to 5 minute intervals
-* Remove code which shows a popup when app is opened from notification
+* Add haptic sound feedback to button clicks?
+* Verify angles of clock hands are correct
+* Create iTunes listing
+* Write app description
