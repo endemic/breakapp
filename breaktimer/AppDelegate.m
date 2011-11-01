@@ -165,15 +165,13 @@
 
 -(void) applicationWillEnterForeground:(UIApplication*)application {
 	[[CCDirector sharedDirector] startAnimation];
-//	NSLog(@"applicationDidEnterForeground");
 	id layer = [[[CCDirector sharedDirector] runningScene] getChildByTag:kClockLayer];
 	
 	// If clock scene is running, update the position of the clock hands
 	if (layer != nil && [layer isKindOfClass:[HelloWorldLayer class]])
 	{
-//		NSLog(@"calling [HelloWorldLayer seClockHands]");
 		[(HelloWorldLayer *)layer updateClockHands];
-		[(HelloWorldLayer *)layer updateBreakHands];
+//		[(HelloWorldLayer *)layer updateBreakHands];
 	}
 }
 
@@ -191,7 +189,6 @@
 
 - (void)applicationSignificantTimeChange:(UIApplication *)application {
 	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
-//	NSLog(@"applicationSignificantTimeChange");
 }
 
 /*
@@ -207,7 +204,7 @@
 	
 	// Create an alert
 	UIAlertView *alertView;
-	
+
 	// Gets the single layer on the currently running scene
 	id layer = [[[CCDirector sharedDirector] runningScene] getChildByTag:kClockLayer];
 	

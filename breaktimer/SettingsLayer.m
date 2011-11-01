@@ -62,6 +62,14 @@
 		// Default values
 		workMinutes = [defaults integerForKey:@"workMinutes"];
 		breakMinutes = [defaults integerForKey:@"breakMinutes"];
+
+		// DEBUG
+//		workMinutes = 1;
+//		breakMinutes = 0;
+//		
+//		[defaults setInteger:1 forKey:@"workMinutes"];
+//		[defaults setInteger:0 forKey:@"breakMinutes"];
+//		[defaults synchronize];
 		
 		// Create label that shows how long each work interval is
 		workSliderLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Work Time (%i minutes)", workMinutes] fontName:@"museo.otf" fontSize:defaultFontSize * fontMultiplier];
@@ -73,7 +81,7 @@
 		CCSlider *workSlider = [CCSlider sliderWithBackgroundFile:[NSString stringWithFormat:@"slider-line%@.png", hdSuffix] thumbFile:[NSString stringWithFormat:@"slider-thumb%@.png", hdSuffix]];
 		workSlider.tag = kWorkSliderTag;
 		workSlider.delegate = self;
-		workSlider.value = (float)(workMinutes - 30) / 150;	// Convert 30 - 180 down to a number between 0 and 1
+//		workSlider.value = (float)(workMinutes - 30) / 150;	// Convert 30 - 180 down to a number between 0 and 1
 		workSlider.position = ccp(windowSize.width / 2, workSliderLabel.position.y - workSlider.contentSize.height * 3);
 		[self addChild:workSlider];
 		
@@ -237,8 +245,6 @@
  */
 - (void)setUpNotification
 {
-//	NSLog(@"Creating one notification");
-
 	// Determine intervals between alerts
 	// First alert is just the "work" interval
 	// Subsequent alerts are work + break intervals
@@ -246,6 +252,8 @@
 	
 	// Create date obj that will be used for our reminder
 	NSDate *notificationTime = [NSDate dateWithTimeIntervalSinceNow:notificationIntervalInSeconds];
+	
+//	NSLog(@"Creating one notification in %i seconds", notificationIntervalInSeconds);
 	
 	// Create new notification obj
 	UILocalNotification *notification = [[UILocalNotification alloc] init];
@@ -259,7 +267,7 @@
 	// Also set as the userInfo property, so that the custom UIAlertView the app creates can use the same text
 	notification.userInfo = [NSDictionary dictionaryWithObject:[wittyComments objectAtIndex:random] forKey:@"text"];
 	
-	notification.alertAction = @"Turn Off";
+	notification.alertAction = @"Edit Alerts";
 	notification.soundName = UILocalNotificationDefaultSoundName;
 //	notification.applicationIconBadgeNumber = 1;
 	[[UIApplication sharedApplication] scheduleLocalNotification:notification];
@@ -271,16 +279,6 @@
  */
 - (void)setUpRepeatNotifications
 {
-	// When notification scheduling is turned on
-	// 1. Get the current date, but add X seconds to it, where X is the time interval between breaks
-	// 2. Set the repeatInterval to be X + break time
-	
-	// Hmm, apparently you can't do custom time intervals
-	// So, you'll have to make a loop and schedule 64 notifications, manually setting the time for each one
-	// Whenever the app is launched, you'll have to clear all notifications and re-schedule, based on a saved (serialized) value
-	
-//	NSLog(@"Creating repeat notifications");
-	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	// Do a loop that sets up max number of notifications 2 - 64 (starting at 1)
@@ -294,6 +292,8 @@
 		// Create date obj that will be used for our reminder
 		NSDate *notificationTime = [NSDate dateWithTimeIntervalSinceNow:notificationIntervalInSeconds];
 		
+//		NSLog(@"Creating repeat notification in %i seconds", notificationIntervalInSeconds);
+		
 		// Create new notification obj
 		UILocalNotification *notification = [[UILocalNotification alloc] init];
 		notification.fireDate = notificationTime;
@@ -306,7 +306,7 @@
 		// Also set as the userInfo property, so that the custom UIAlertView the app creates can use the same text
 		notification.userInfo = [NSDictionary dictionaryWithObject:[wittyComments objectAtIndex:random] forKey:@"text"];
 		
-		notification.alertAction = @"Edit Reminders";
+		notification.alertAction = @"Edit Alerts";
 		notification.soundName = UILocalNotificationDefaultSoundName;
 //		notification.applicationIconBadgeNumber = 1;
 		[[UIApplication sharedApplication] scheduleLocalNotification:notification];

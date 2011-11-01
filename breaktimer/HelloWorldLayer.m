@@ -138,7 +138,7 @@
 	// 1 hour = 30 degrees
 	secondHand.rotation = second * 6;
 	minuteHand.rotation = (minute * 6) + (second * 6 / 60);	// Plus percentage of seconds
-	hourHand.rotation = (hour % 12) * 30 + (minute * 30 / 60) + (second * 6 / 60);	// Plus percentage of minutes + seconds
+	hourHand.rotation = (hour % 12) * 30 + (minute * 30 / 60);	// Plus percentage of minutes
 }
 
 /**
@@ -167,7 +167,7 @@
 	// 1 hour = 30 degrees
 	secondHand.rotation = second * 6;
 	minuteHand.rotation = (minute * 6) + (second * 6 / 60);	// Plus percentage of seconds
-	hourHand.rotation = (hour % 12) * 30 + (minute * 30 / 60) + (second * 6 / 60);	// Plus percentage of minutes + seconds
+	hourHand.rotation = (hour % 12) * 30 + (minute * 30 / 60);	// Plus percentage of minutes
 	
 	[secondHand runAction:[CCFadeIn actionWithDuration:0.25]];
 	[minuteHand runAction:[CCFadeIn actionWithDuration:0.25]];
@@ -195,7 +195,7 @@
 		int second = [components second];
 		
 		breakMinuteHand.rotation = (minute * 6) + (second * 6 / 60);	// Plus percentage of seconds
-		breakHourHand.rotation = (hour % 12) * 30 + (minute * 30 / 60) + (second * 6 / 60);	// Plus percentage of minutes + seconds
+		breakHourHand.rotation = (hour % 12) * 30 + (minute * 30 / 60);	// Plus percentage of minutes
 		
 		// Make visible if needed
 		if (breakHourHand.opacity == 0 && breakMinuteHand.opacity == 0)
@@ -236,7 +236,7 @@
 		[breakMinuteHand runAction:[CCFadeOut actionWithDuration:0.25]];
 		
 		breakMinuteHand.rotation = (minute * 6) + (second * 6 / 60);	// Plus percentage of seconds
-		breakHourHand.rotation = (hour % 12) * 30 + (minute * 30 / 60) + (second * 6 / 60);	// Plus percentage of minutes + seconds
+		breakHourHand.rotation = (hour % 12) * 30 + (minute * 30 / 60);	// Plus percentage of minutes
 		
 		[breakHourHand runAction:[CCFadeIn actionWithDuration:0.25]];
 		[breakMinuteHand runAction:[CCFadeIn actionWithDuration:0.25]];
@@ -255,10 +255,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	// Get the next notification and move the "pending" clock hands to the next break time
-	NSLog(@"Received the alert callback from HelloWorldLayer!");
-	
 	[self updateBreakHands];
-	[self updateClockHands];
 }
 
 // on "dealloc" you need to release all your retained objects

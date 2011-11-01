@@ -1,5 +1,3 @@
-* Add haptic sound feedback to button clicks
-* Verify angles of clock hands are correct
 * Write app description
-* Edit reminder messages to show duration of break?
-* [BUG] Notifications are getting updated even when no settings have changed
+* Verify keywords
+* Upload
